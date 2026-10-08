@@ -1,0 +1,13 @@
+id,nazwa,typ,nip,email,telefon,miasto,data_utworzenia
+1,Alfa Sp. z o.o.,firma,7010000001,biuro@alfa.example,221234567,Warszawa,2025-01-10
+2,Beta SA,firma,NULL,kontakt@beta.example,+48 600 100 200,Kraków,2025-02-03
+3,Gamma,firma,,info@gamma.example,NULL,Gdańsk,2025-02-15
+4,Jan Kowalski,osoba,NULL,jan.k@example.com,501 222 333,Łódź,2025-03-01
+5,Anna Nowak,osoba,NULL,n/d,502 333 444,NULL,2025-03-09
+6,Delta Sp. z o.o.,firma,brak,-,,Poznań,2025-04-20
+7,Epsilon Sp. z o.o.,firma,7010000003,epsilon@epsilon.example,123456789,Rzeszów,2025-04-28
+8,Anna Wiśniewska,osoba,NULL,a.wisniewska@example.com, ,Wrocław,2025-05-11
+9,Zeta Sp. z o.o.,firma,7010000004,zeta@zeta.example,123456780,Szczecin,2025-06-02
+10,Eta,firma,---,NULL,-,Lublin,2025-07-14
+11,Piotr Zieliński,osoba,NULL,piotr.z@example.com,503 444 555,Katowice,2025-08-30
+12,Theta SA,firma,7010000007,theta@theta.example,224445566,NULL,2025-09-18
