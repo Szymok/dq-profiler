@@ -89,7 +89,7 @@ ${warnings}
 <h2>Reguły ważności</h2>
 <table><thead><tr><th>Kolumna</th><th>Reguła</th><th>Poprawne</th><th>Niepoprawne</th></tr></thead><tbody>${rules || '<tr><td colspan="4">Nie wybrano reguł.</td></tr>'}</tbody></table>
 <p class="note">Progi: zielony od 95%, żółty 85–95%, czerwony poniżej 85%. Wynik łączny to średnia ze zmierzonych wymiarów. Raport dotyczy jednego pliku i trzech z sześciu wymiarów jakości danych (bez dokładności, spójności i aktualności). Dane były przetwarzane wyłącznie w przeglądarce.</p>
-<p class="note">Pełny pomiar w sześciu wymiarach z planem naprawy: <a href="${OFFER_URL}">audyt jakości danych</a>.</p>
+<p class="note">Pełny pomiar w sześciu wymiarach z planem naprawy: <a href="${OFFER_URL}" target="_blank" rel="noopener">audyt jakości danych</a>.</p>
 </body>
 </html>
 `;
