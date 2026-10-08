@@ -1,0 +1,4 @@
+# Line endings are LF on every machine, whatever core.autocrlf says.
+# Vite keeps the source line endings in dist/index.html and `npm run release` records a SHA-256 of every
+# built file, so CRLF on one machine and LF on another would produce different bytes for the same commit.
+* text=auto eol=lf

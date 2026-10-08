@@ -54,6 +54,10 @@ test("the only absolute URLs in the build point to the allowed hosts", () => {
   }
 });
 
+test("every built file uses LF line endings, so the same commit gives the same bytes on any machine", () => {
+  for (const file of assets) expect(readFileSync(file, "utf8"), file).not.toContain("\r");
+});
+
 test("the footer and the back link point to the author's site, the audit and the source code", async ({ page }) => {
   await page.goto("./");
   await expect(page.getByRole("link", { name: "← skszymon.eu" })).toHaveAttribute("href", "https://skszymon.eu/");
