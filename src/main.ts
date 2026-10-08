@@ -6,7 +6,9 @@ import { computeReport, RULE_LABELS, type Report } from "./report";
 import type { RuleKind } from "./rules";
 import { buildConfig, initialSettings, localIsoDate, type ColumnSetting, type RuleChoice } from "./settings";
 
-const MAX_BYTES = 50 * 1024 * 1024;
+/** Memory use is about 17x the file size (measured), so 25 MB is roughly 430 MB of heap. See README. */
+const MAX_BYTES = 25 * 1024 * 1024;
+const MAX_MB = MAX_BYTES / 1024 / 1024;
 const DELIMITER_LABELS: Record<Delimiter, string> = { ",": "przecinek ( , )", ";": "średnik ( ; )", "\t": "tabulator", "|": "kreska pionowa ( | )" };
 
 type Child = Node | string | null | undefined | false;
@@ -53,7 +55,7 @@ async function onFile(): Promise<void> {
   if (file.size > MAX_BYTES) {
     loaded = null;
     configSection.hidden = true;
-    setStatus(`Plik ma ${(file.size / 1024 / 1024).toFixed(1)} MB. Limit to ${MAX_BYTES / 1024 / 1024} MB. Zmniejsz plik lub wczytaj jego fragment.`);
+    setStatus(`Plik ma ${(file.size / 1024 / 1024).toFixed(1)} MB. Limit to ${MAX_MB} MB. Zmniejsz plik lub wczytaj jego fragment.`);
     return;
   }
   setStatus("Wczytuję plik…");
@@ -220,7 +222,7 @@ if (app) {
     h(
       "p",
       { className: "notice" },
-      "Plik jest przetwarzany wyłącznie w tej przeglądarce. Nie jest wysyłany na żaden serwer, a przeglądarka blokuje wszelkie połączenia sieciowe z tej strony. Limit: 50 MB, UTF-8 lub Windows-1250.",
+      `Plik jest przetwarzany wyłącznie w tej przeglądarce. Nie jest wysyłany na żaden serwer, a przeglądarka blokuje wszelkie połączenia sieciowe z tej strony. Limit: ${MAX_MB} MB, UTF-8 lub Windows-1250.`,
     ),
     h("section", { "aria-labelledby": "load-title" }, h("h2", { id: "load-title" }, "1. Wybierz plik"), h("label", { htmlFor: "file" }, "Plik CSV"), fileInput, status),
     configSection,
