@@ -78,6 +78,7 @@ Testy statyczne budowy (`e2e/build.e2e.ts`) są wtedy pomijane, bo wymagają kat
 
 ### Wydanie i osadzenie na stronie
 
+0. Końce linii są wymuszone na LF przez `.gitattributes` (niezależnie od `core.autocrlf`), bo Vite zachowuje je w `dist/index.html`, a manifest zapisuje sumy SHA-256. Bez tego ten sam commit dawał różne bajty na Windowsie i Linuksie.
 1. Zacommituj zmiany (manifest oznacza niezacommitowany stan jako `DIRTY`).
 2. Oznacz wersję tagiem (`git tag vX.Y.Z`) i uruchom `npm run release`.
 3. Skopiuj zawartość `dist/` (razem z `VERSION`) do miejsca hostingu. Strona skszymon.eu trzyma kopię w `assets/tools/dq-profiler/` i sprawdza sumy z `VERSION` testem.
