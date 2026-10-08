@@ -11,6 +11,7 @@ Projekt jest w trakcie budowy. Działa pełny przepływ w przeglądarce (wczytan
 - Raport jest wyświetlany w ramce z `sandbox` (bez skryptów). Nazwy kolumn i wartości z pliku są wstawiane jako tekst lub escapowane, nigdy jako HTML.
 - Raport HTML jest samodzielnym plikiem: wbudowane style, bez skryptów i bez zewnętrznych zasobów (poza jednym linkiem do oferty).
 - Przykłady błędnych wartości w raporcie można wyłączyć przed udostępnieniem.
+- Te właściwości pilnują testy w przeglądarce (`e2e/privacy.e2e.ts`): brak żądań sieciowych po wybraniu pliku, zbudowaniu i pobraniu raportu; blokada `fetch`, `sendBeacon` i `WebSocket` przez CSP (sprawdzana zdarzeniami naruszenia polityki, bo `sendBeacon` i `WebSocket` same nie zgłaszają błędu); złośliwe nazwy kolumn i wartości nie wykonują się.
 
 ## Co mierzy
 
@@ -57,6 +58,7 @@ npm install
 npm run dev        # serwer deweloperski (bez CSP)
 npm test           # testy jednostkowe (Vitest)
 npm run typecheck  # kontrola typów
+npm run test:e2e   # testy w przeglądarce (Playwright), na zbudowanej wersji z CSP
 npm run build      # build produkcyjny do dist/ (z CSP)
 npx vite preview   # podgląd zbudowanej wersji (http://localhost:4173)
 ```
@@ -82,7 +84,7 @@ Testy odtwarzają liczby opublikowane we wpisie „Kompletność danych w SQL" (
 
 ## Plan
 
-Plan, zasady i pre-mortem: `docs/dq-profiler-plan.md` w repozytorium strony skszymon.eu. Do zrobienia: test automatyczny (Playwright) potwierdzający brak żądań sieciowych, integracja ze stroną.
+Plan, zasady i pre-mortem: `docs/dq-profiler-plan.md` w repozytorium strony skszymon.eu. Do zrobienia: integracja ze stroną, CI (uruchamianie testów jednostkowych i e2e przy każdym pushu).
 
 ## Licencja
 
