@@ -60,10 +60,29 @@ npm test           # testy jednostkowe (Vitest)
 npm run typecheck  # kontrola typów
 npm run test:e2e   # testy w przeglądarce (Playwright), na zbudowanej wersji z CSP
 npm run build      # build produkcyjny do dist/ (z CSP)
+npm run release    # build + dist/VERSION (wersja, commit, sumy SHA-256 plików)
 npx vite preview   # podgląd zbudowanej wersji (http://localhost:4173)
 ```
 
 Build używa ścieżek względnych (`base: "./"`), więc można go osadzić pod dowolną ścieżką.
+
+### Testy na wdrożonej kopii
+
+Te same testy zachowania i prywatności można uruchomić na adresie, pod którym narzędzie jest opublikowane (końcowy `/` jest ważny):
+
+```bash
+E2E_BASE_URL=https://skszymon.eu/assets/tools/dq-profiler/ npm run test:e2e
+```
+
+Testy statyczne budowy (`e2e/build.e2e.ts`) są wtedy pomijane, bo wymagają katalogu `dist/`.
+
+### Wydanie i osadzenie na stronie
+
+1. Zacommituj zmiany (manifest oznacza niezacommitowany stan jako `DIRTY`).
+2. Oznacz wersję tagiem (`git tag vX.Y.Z`) i uruchom `npm run release`.
+3. Skopiuj zawartość `dist/` (razem z `VERSION`) do miejsca hostingu. Strona skszymon.eu trzyma kopię w `assets/tools/dq-profiler/` i sprawdza sumy z `VERSION` testem.
+
+Aplikacja jest osobnym dokumentem bez analityki i śledzenia, ze ścisłym CSP. Nie osadzaj jej w stronie z własnymi skryptami analitycznymi ani z nagrywaniem sesji: nagranie mogłoby przechwycić dane z pliku. Testy `e2e/build.e2e.ts` pilnują, żeby w buildzie nie było kodu analitycznego ani adresów spoza dozwolonej listy (`skszymon.eu`, `github.com`, jako zwykłe linki).
 
 ## Struktura
 
@@ -78,6 +97,8 @@ src/
   settings.ts    ustawienia z interfejsu -> konfiguracja raportu
   main.ts        interfejs (czysty TypeScript, bez frameworka)
   fixtures/      syntetyczne dane testowe
+e2e/             testy w przeglądarce (Playwright): prywatność, zachowanie, statyczna kontrola buildu
+scripts/         manifest.mjs: dist/VERSION z commitem i sumami SHA-256
 ```
 
 Testy odtwarzają liczby opublikowane we wpisie „Kompletność danych w SQL" (76,8% pól wymaganych, 41,7% kompletnych rekordów) na tych samych 12 wymyślonych rekordach. Wszystkie dane testowe są syntetyczne, numery NIP są wymyślone i celowo nie przechodzą sumy kontrolnej.

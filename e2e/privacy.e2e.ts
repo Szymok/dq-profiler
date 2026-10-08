@@ -22,14 +22,15 @@ test.describe("privacy: the file never leaves the browser", () => {
     const requests: { method: string; url: string }[] = [];
     page.on("request", (r) => requests.push({ method: r.method(), url: r.url() }));
 
-    await page.goto("/");
+    await page.goto("./");
     await page.waitForLoadState("networkidle");
     const initial = requests.length;
 
-    // The page itself may only load its own static files.
+    // The page itself may only load its own static files, from its own origin, with GET.
+    const origin = new URL(page.url()).origin;
     for (const r of requests) {
       expect(r.method).toBe("GET");
-      expect(r.url).toMatch(/^http:\/\/localhost:4173\//);
+      expect(new URL(r.url).origin).toBe(origin);
     }
 
     await upload(page, "klienci.csv", klienci);
@@ -49,7 +50,7 @@ test.describe("privacy: the file never leaves the browser", () => {
   });
 
   test("the Content-Security-Policy makes the browser refuse every outgoing connection", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("./");
     const csp = await page.locator('meta[http-equiv="Content-Security-Policy"]').getAttribute("content");
     expect(csp).toContain("connect-src 'none'");
 
@@ -103,7 +104,7 @@ test.describe("privacy: the file never leaves the browser", () => {
 
 test.describe("behaviour in the browser", () => {
   test("reproduces the figures published in the SQL completeness post", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("./");
     await upload(page, "klienci.csv", klienci);
     await expect(page.getByRole("status")).toContainText("Wczytano 12 wierszy");
     await configureLikeThePost(page);
@@ -126,7 +127,7 @@ test.describe("behaviour in the browser", () => {
     // The empty cell makes the hostile column show up in the report ("columns needing attention").
     const csv = `${hostileHeader},email\n<script>window.__pwned=2</script>,zly\n,c@d.pl\n"<b>x</b>",a@b.pl\n`;
 
-    await page.goto("/");
+    await page.goto("./");
     await upload(page, "zly.csv", Buffer.from(csv));
     await expect(page.getByRole("status")).toContainText("Wczytano 3 wierszy");
     await expect(page.locator("table.config th[scope=row]").first()).toHaveText(hostileHeader);
@@ -141,20 +142,20 @@ test.describe("behaviour in the browser", () => {
   });
 
   test("rejects a file over the 25 MB limit with a clear message", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("./");
     await upload(page, "za-duzy.csv", Buffer.alloc(26 * 1024 * 1024, "a"));
     await expect(page.getByRole("status")).toContainText("Limit to 25 MB");
     await expect(page.locator("#config-title")).toBeHidden();
   });
 
   test("explains an empty or non-CSV file instead of failing silently", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("./");
     await upload(page, "pusty.csv", Buffer.from(""));
     await expect(page.getByRole("status")).toContainText("nie znaleziono nagłówka i danych");
   });
 
   test("lets the user change a wrongly detected separator", async ({ page }) => {
-    await page.goto("/");
+    await page.goto("./");
     await upload(page, "srednik.csv", Buffer.from("a;b;c\n1;2;3\n4;5;6\n"));
     await expect(page.getByRole("status")).toContainText("Wczytano 2 wierszy i 3 kolumn");
     await page.locator("#delimiter").selectOption(",");
