@@ -1,6 +1,6 @@
 import "./style.css";
 import { decodeBytes, parseCsv, type Delimiter, type ParsedCsv } from "./csv";
-import { toHtml, toJson } from "./export";
+import { OFFER_URL, toHtml, toJson } from "./export";
 import { profileTable, type TableProfile } from "./profile";
 import { computeReport, RULE_LABELS, type Report } from "./report";
 import type { RuleKind } from "./rules";
@@ -9,6 +9,8 @@ import { buildConfig, initialSettings, localIsoDate, type ColumnSetting, type Ru
 /** Memory use is about 17x the file size (measured), so 25 MB is roughly 430 MB of heap. See README. */
 const MAX_BYTES = 25 * 1024 * 1024;
 const MAX_MB = MAX_BYTES / 1024 / 1024;
+const SITE_URL = "https://skszymon.eu/";
+const SOURCE_URL = "https://github.com/Szymok/dq-profiler";
 const DELIMITER_LABELS: Record<Delimiter, string> = { ",": "przecinek ( , )", ";": "średnik ( ; )", "\t": "tabulator", "|": "kreska pionowa ( | )" };
 
 type Child = Node | string | null | undefined | false;
@@ -217,6 +219,7 @@ function download(name: string, content: string, type: string): void {
 const app = document.querySelector<HTMLDivElement>("#app");
 if (app) {
   app.replaceChildren(
+    h("p", { className: "hint" }, h("a", { href: SITE_URL }, "← skszymon.eu")),
     h("h1", {}, "DQ Profiler"),
     h("p", { className: "lead" }, "Wgraj plik CSV i zobacz jego jakość: kompletność, unikalność i ważność, z semaforem 95% / 85%."),
     h(
@@ -227,5 +230,13 @@ if (app) {
     h("section", { "aria-labelledby": "load-title" }, h("h2", { id: "load-title" }, "1. Wybierz plik"), h("label", { htmlFor: "file" }, "Plik CSV"), fileInput, status),
     configSection,
     resultSection,
+    h(
+      "footer",
+      { className: "hint" },
+      "Autor: Szymon Kowalewski. ",
+      h("a", { href: OFFER_URL, rel: "noopener" }, "Pełny pomiar w sześciu wymiarach: audyt jakości danych"),
+      " · ",
+      h("a", { href: SOURCE_URL, rel: "noopener" }, "Kod źródłowy (MIT)"),
+    ),
   );
 }
