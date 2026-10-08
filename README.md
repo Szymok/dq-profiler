@@ -2,7 +2,7 @@
 
 Profil jakości danych z pliku CSV, liczony w całości w przeglądarce. Wgrywasz plik, wskazujesz, co jest wymagane i jakie reguły sprawdzić, i dostajesz raport z semaforem (zielony od 95%, żółty 85–95%, czerwony poniżej 85%).
 
-Projekt jest w trakcie budowy. Działa pełny przepływ w przeglądarce (wczytanie, ustawienia, raport, pobranie HTML i JSON). Nie jest jeszcze wdrożony na stronie ani opublikowany.
+Projekt jest w trakcie budowy. Działa pełny przepływ w przeglądarce (wczytanie, ustawienia, raport, pobranie HTML i JSON). Nie jest jeszcze wdrożony na stronie skszymon.eu.
 
 ## Prywatność
 
@@ -82,4 +82,8 @@ Testy odtwarzają liczby opublikowane we wpisie „Kompletność danych w SQL" (
 
 ## Plan
 
-Plan, zasady i pre-mortem: `docs/dq-profiler-plan.md` w repozytorium strony skszymon.eu. Do zrobienia: test automatyczny (Playwright) potwierdzający brak żądań sieciowych, integracja ze stroną, licencja.
+Plan, zasady i pre-mortem: `docs/dq-profiler-plan.md` w repozytorium strony skszymon.eu. Do zrobienia: test automatyczny (Playwright) potwierdzający brak żądań sieciowych, integracja ze stroną.
+
+## Licencja
+
+MIT, zobacz plik `LICENSE`.
