@@ -28,6 +28,12 @@ test("the built page declares a strict CSP and asks not to be indexed", () => {
   expect(html).toMatch(/<meta name="robots" content="noindex"/);
 });
 
+test("every built script is named *.min.js so hosts that re-minify .js files leave it untouched", () => {
+  const scripts = files(DIST).filter((f) => f.endsWith(".js"));
+  expect(scripts.length).toBeGreaterThan(0);
+  for (const file of scripts) expect(file, file).toMatch(/\.min\.js$/);
+});
+
 test("the built page loads only its own relative script and stylesheet", () => {
   const scripts = [...html.matchAll(/<script\b[^>]*>/g)].map((m) => m[0]);
   expect(scripts.length).toBeGreaterThan(0);

@@ -28,4 +28,14 @@ export default defineConfig({
   // Relative asset paths so the build works from any sub-path (e.g. embedded under /narzedzia/).
   base: "./",
   plugins: [csp()],
+  build: {
+    rollupOptions: {
+      output: {
+        // The bundle is already minified. Naming it *.min.js is also a contract with hosts: static-site pipelines such as
+        // jekyll-terser rewrite every .js file except *.min.js, which would change the bytes recorded in dist/VERSION.
+        entryFileNames: "assets/[name]-[hash].min.js",
+        chunkFileNames: "assets/[name]-[hash].min.js",
+      },
+    },
+  },
 });
