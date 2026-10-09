@@ -103,6 +103,17 @@ test.describe("privacy: the file never leaves the browser", () => {
 });
 
 test.describe("behaviour in the browser", () => {
+  test("has one main landmark holding the tool, plus a header and a footer", async ({ page }) => {
+    await page.goto("./");
+    await expect(page.getByRole("main")).toHaveCount(1);
+    await expect(page.getByRole("main").getByRole("heading", { level: 1, name: "DQ Profiler" })).toBeVisible();
+    await expect(page.getByRole("main").locator("#file")).toHaveCount(1);
+    await expect(page.getByRole("banner")).toHaveCount(1);
+    await expect(page.getByRole("contentinfo")).toHaveCount(1);
+    // The footer must stay outside <main>, otherwise it is not exposed as "contentinfo".
+    await expect(page.getByRole("main").getByRole("contentinfo")).toHaveCount(0);
+  });
+
   test("reproduces the figures published in the SQL completeness post", async ({ page }) => {
     await page.goto("./");
     await upload(page, "klienci.csv", klienci);

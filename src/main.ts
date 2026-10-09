@@ -218,18 +218,23 @@ function download(name: string, content: string, type: string): void {
 
 const app = document.querySelector<HTMLDivElement>("#app");
 if (app) {
+  // Landmarks: header (link back), one main (the tool), footer. Screen-reader users can jump straight to <main>.
   app.replaceChildren(
-    h("p", { className: "hint" }, h("a", { href: SITE_URL }, "← skszymon.eu")),
-    h("h1", {}, "DQ Profiler"),
-    h("p", { className: "lead" }, "Wgraj plik CSV i zobacz jego jakość: kompletność, unikalność i ważność, z semaforem 95% / 85%."),
+    h("header", {}, h("p", { className: "hint" }, h("a", { href: SITE_URL }, "← skszymon.eu"))),
     h(
-      "p",
-      { className: "notice" },
-      `Plik jest przetwarzany wyłącznie w tej przeglądarce. Nie jest wysyłany na żaden serwer, a przeglądarka blokuje wszelkie połączenia sieciowe z tej strony. Limit: ${MAX_MB} MB, UTF-8 lub Windows-1250.`,
+      "main",
+      {},
+      h("h1", {}, "DQ Profiler"),
+      h("p", { className: "lead" }, "Wgraj plik CSV i zobacz jego jakość: kompletność, unikalność i ważność, z semaforem 95% / 85%."),
+      h(
+        "p",
+        { className: "notice" },
+        `Plik jest przetwarzany wyłącznie w tej przeglądarce. Nie jest wysyłany na żaden serwer, a przeglądarka blokuje wszelkie połączenia sieciowe z tej strony. Limit: ${MAX_MB} MB, UTF-8 lub Windows-1250.`,
+      ),
+      h("section", { "aria-labelledby": "load-title" }, h("h2", { id: "load-title" }, "1. Wybierz plik"), h("label", { htmlFor: "file" }, "Plik CSV"), fileInput, status),
+      configSection,
+      resultSection,
     ),
-    h("section", { "aria-labelledby": "load-title" }, h("h2", { id: "load-title" }, "1. Wybierz plik"), h("label", { htmlFor: "file" }, "Plik CSV"), fileInput, status),
-    configSection,
-    resultSection,
     h(
       "footer",
       { className: "hint" },
